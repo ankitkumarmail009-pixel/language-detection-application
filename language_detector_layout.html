@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Language Detector · Portfolio Build</title>
+    <style>
+        :root {
+            --bg: #05060f;
+            --bg-panel: #0f172a;
+            --bg-card: #111a35;
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #c084fc;
+            --accent-strong: #a855f7;
+            --surface: rgba(255, 255, 255, 0.04);
+            --border: rgba(255, 255, 255, 0.1);
+            --radius: 22px;
+            --shadow: 0 30px 80px rgba(5, 6, 15, 0.7);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(circle at 20% 20%, rgba(192, 132, 252, 0.15), transparent 35%),
+                radial-gradient(circle at 80% 0%, rgba(59, 130, 246, 0.12), transparent 40%),
+                var(--bg);
+            line-height: 1.6;
+            padding: clamp(1.5rem, 3vw, 3rem);
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header, main, section, footer {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .page {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            gap: 3rem;
+        }
+
+        .hero {
+            background: var(--bg-panel);
+            border-radius: var(--radius);
+            padding: clamp(1.5rem, 4vw, 3rem);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+
+        .hero__pill {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--text-muted);
+        }
+
+        .hero__title {
+            font-size: clamp(2.5rem, 5vw, 3.8rem);
+            letter-spacing: -0.03em;
+            margin: 0.5rem 0;
+        }
+
+        .hero__cta {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 999px;
+            padding: 0.85rem 1.6rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 150ms ease, box-shadow 150ms ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(120deg, var(--accent), var(--accent-strong));
+            color: #fff;
+            box-shadow: 0 15px 35px rgba(168, 85, 247, 0.35);
+        }
+
+        .btn-secondary {
+            background: var(--surface);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .btn:not(:disabled):hover {
+            transform: translateY(-3px);
+        }
+
+        .grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .grid-3 {
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        }
+
+        .grid-2 {
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        }
+
+        .card {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 160px;
+            border-radius: 18px;
+            padding: 1rem;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.02);
+            color: #fff;
+            resize: vertical;
+            font-size: 1rem;
+        }
+
+        .samples {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.65rem;
+        }
+
+        .pill {
+            padding: 0.4rem 0.9rem;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--border);
+            font-size: 0.85rem;
+        }
+
+        .results {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+        }
+
+        .results span.value {
+            font-size: 1.9rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        footer {
+            border-top: 1px solid var(--border);
+            padding-top: 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        footer nav {
+            display: flex;
+            gap: 1rem;
+        }
+
+        @media (max-width: 600px) {
+            .hero__cta {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <header class="hero">
+            <span class="hero__pill">Language AI • Portfolio Build</span>
+            <h1 class="hero__title">Lightweight Language Detection<br>for Modern NLP Pipelines</h1>
+            <p style="color: var(--text-muted); max-width: 700px;">
+                Paste any snippet, tap “Detect Language”, and get instant predictions with confidence,
+                ISO codes, and guidance for next steps. Built with scikit-learn and a curated multilingual dataset.
+            </p>
+            <div class="hero__cta">
+                <button class="btn btn-primary" id="primary-action">Start Detecting</button>
+                <button class="btn btn-secondary">View Docs</button>
+            </div>
+        </header>
+
+        <section>
+            <div class="section-heading">
+                <h2>How It Works</h2>
+                <span class="pill">Process</span>
+            </div>
+            <div class="grid grid-3">
+                <div class="card"><strong>1. Provide Text</strong><p>Paste or type any sentence or paragraph.</p></div>
+                <div class="card"><strong>2. Normalize</strong><p>We lowercase, clean, and vectorize the text.</p></div>
+                <div class="card"><strong>3. Predict</strong><p>Multinomial Naïve Bayes infers the most likely language.</p></div>
+            </div>
+        </section>
+
+        <section class="card" id="detector">
+            <div class="section-heading">
+                <h2>Try the Detector</h2>
+                <small style="color: var(--text-muted);">Provide 10+ characters for higher confidence.</small>
+            </div>
+            <div class="samples">
+                <button class="btn btn-secondary sample" data-text="Hello world! This detector is awesome.">English</button>
+                <button class="btn btn-secondary sample" data-text="Hola mundo, este detector es fantástico.">Spanish</button>
+                <button class="btn btn-secondary sample" data-text="Bonjour tout le monde, ce détecteur est génial.">French</button>
+                <button class="btn btn-secondary sample" data-text="Hallo Welt, dieser Detektor ist großartig.">German</button>
+            </div>
+            <textarea id="user-input" placeholder="Paste or type text here..."></textarea>
+            <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+                <button class="btn btn-primary" id="detect-btn">🔍 Detect Language</button>
+                <button class="btn btn-secondary" id="clear-btn">🧹 Clear</button>
+            </div>
+            <p id="error" style="color:#f87171; display:none;"></p>
+        </section>
+
+        <section class="card">
+            <div class="section-heading">
+                <h2>Detection Results</h2>
+                <span class="pill" id="result-status">Awaiting Input</span>
+            </div>
+            <div class="results">
+                <div>
+                    <span class="helper">Detected Language</span>
+                    <span class="value" id="result-language">—</span>
+                </div>
+                <div>
+                    <span class="helper">Confidence</span>
+                    <span class="value" id="result-confidence">—</span>
+                </div>
+                <div>
+                    <span class="helper">ISO Code</span>
+                    <span class="value" id="result-iso">—</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="grid grid-2">
+            <article class="card">
+                <h3>About This Project</h3>
+                <p>
+                    Built for academic showcases and rapid prototypes. Features clean preprocessing,
+                    reproducible training scripts, and hooks for API deployment.
+                </p>
+            </article>
+            <article class="card">
+                <h3>Tech Stack</h3>
+                <div class="samples">
+                    <span class="pill">Python</span>
+                    <span class="pill">Pandas</span>
+                    <span class="pill">scikit-learn</span>
+                    <span class="pill">Streamlit</span>
+                    <span class="pill">FastAPI</span>
+                </div>
+            </article>
+        </section>
+
+        <footer>
+            <span>© 2025 Language Detector · Designed for portfolios.</span>
+            <nav>
+                <a href="#">GitHub</a>
+                <a href="#">Docs</a>
+                <a href="mailto:hello@example.com">Contact</a>
+            </nav>
+        </footer>
+    </div>
+
+    <script>
+        const samples = document.querySelectorAll(".sample");
+        const textarea = document.getElementById("user-input");
+        const detectBtn = document.getElementById("detect-btn");
+        const clearBtn = document.getElementById("clear-btn");
+        const errorMsg = document.getElementById("error");
+        const languageEl = document.getElementById("result-language");
+        const confidenceEl = document.getElementById("result-confidence");
+        const isoEl = document.getElementById("result-iso");
+        const statusEl = document.getElementById("result-status");
+
+        samples.forEach(btn => {
+            btn.addEventListener("click", () => {
+                textarea.value = btn.dataset.text;
+                errorMsg.style.display = "none";
+            });
+        });
+
+        clearBtn.addEventListener("click", () => {
+            textarea.value = "";
+            errorMsg.style.display = "none";
+            resetResults();
+        });
+
+        function resetResults() {
+            languageEl.textContent = "—";
+            confidenceEl.textContent = "—";
+            isoEl.textContent = "—";
+            statusEl.textContent = "Awaiting Input";
+        }
+
+        detectBtn.addEventListener("click", () => {
+            const text = textarea.value.trim();
+            if (text.length < 10) {
+                errorMsg.textContent = "Please enter at least 10 characters.";
+                errorMsg.style.display = "block";
+                return;
+            }
+            errorMsg.style.display = "none";
+            detectBtn.disabled = true;
+            detectBtn.textContent = "Detecting...";
+
+            setTimeout(() => {
+                detectBtn.disabled = false;
+                detectBtn.textContent = "🔍 Detect Language";
+                const fakeLangs = [
+                    { lang: "English", iso: "en" },
+                    { lang: "Spanish", iso: "es" },
+                    { lang: "French", iso: "fr" },
+                    { lang: "German", iso: "de" }
+                ];
+                const pick = fakeLangs[Math.floor(Math.random() * fakeLangs.length)];
+                const confidence = (Math.random() * 0.2 + 0.8);
+                languageEl.textContent = pick.lang;
+                confidenceEl.textContent = (confidence * 100).toFixed(1) + "%";
+                isoEl.textContent = pick.iso;
+                statusEl.textContent = "Demo Result";
+            }, 1200);
+        });
+    </script>
+</body>
+</html>
+
